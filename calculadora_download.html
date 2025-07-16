@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Simples Nacional - Anexo III</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1200ff 0%, #010d3d 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #010d3d, #1200ff);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .brand {
+            background: linear-gradient(135deg, #e7fd37, #e6e7e9);
+            color: #010d3d;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .calculator {
+            padding: 40px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #010d3d;
+            font-size: 1.1rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e6ed;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #1200ff;
+            box-shadow: 0 0 0 3px rgba(18, 0, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #1200ff, #010d3d);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(18, 0, 255, 0.3);
+        }
+
+        .pricing-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .pricing-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(40, 167, 69, 0.3);
+        }
+
+        .results {
+            background: linear-gradient(135deg, #f8f9ff, #e6f3ff);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 20px;
+            border-left: 5px solid #1200ff;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(18, 0, 255, 0.1);
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            font-weight: 600;
+            color: #010d3d;
+        }
+
+        .result-value {
+            font-weight: bold;
+            color: #1200ff;
+            font-size: 1.1rem;
+        }
+
+        .pricing-result {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .pricing-result h3 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .pricing-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .cta {
+            background: linear-gradient(135deg, #e7fd37, #e6e7e9);
+            color: #010d3d;
+            padding: 30px;
+            text-align: center;
+            margin-top: 30px;
+            border-radius: 15px;
+        }
+
+        .cta h3 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .cta p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .cta-btn {
+            background: #1200ff;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .info-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .tab-container {
+            display: flex;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            background: #f8f9fa;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            color: #6c757d;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #1200ff, #010d3d);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .calculator {
+                padding: 20px;
+            }
+
+            .pricing-value {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="brand">
+            DUO CONTABILIDADE DIGITAL - Especialistas em Negócios Digitais
+        </div>
+        
+        <div class="header">
+            <h1>💰 Calculadora Simples Nacional</h1>
+            <p>Descubra quanto você pagará de impostos no Anexo III</p>
+        </div>
+
+        <div class="calculator">
+            <div class="info-box">
+                <strong>📋 Anexo III:</strong> Para prestadores de serviços como consultores, desenvolvedores, designers, marketeiros digitais, coaches e profissionais liberais.
+            </div>
+
+            <!-- Abas para diferentes tipos de cálculo -->
+            <div class="tab-container">
+                <button class="tab active" onclick="showTab('imposto')">🧮 Calcular Impostos</button>
+                <button class="tab" onclick="showTab('precificacao')">💼 Calcular Preço</button>
+            </div>
+
+            <!-- Aba de Cálculo de Impostos -->
+            <div id="imposto-tab" class="tab-content active">
+                <div class="input-group">
+                    <label for="faturamento">💵 Faturamento Mensal Atual (R$)</label>
+                    <input type="text" id="faturamento" placeholder="R$ 15.000,00" maxlength="20">
+                </div>
+
+                <div class="input-group">
+                    <label for="faturamento12meses">📊 Faturamento Total dos Últimos 12 Meses (R$)</label>
+                    <input type="text" id="faturamento12meses" placeholder="R$ 180.000,00" maxlength="20">
+                    <small style="color: #666; font-size: 0.9rem; margin-top: 5px; display: block;">
+                        ⚠️ Este valor determina sua alíquota real no Simples Nacional
+                    </small>
+                </div>
+
+                <button class="calculate-btn" onclick="calcularImpostos()">
+                    🧮 Calcular Impostos
+                </button>
+            </div>
+
+            <!-- Aba de Precificação -->
+            <div id="precificacao-tab" class="tab-content">
+                <div class="input-group">
+                    <label for="aliquotaManual">📊 Sua Alíquota do Simples Nacional (%)</label>
+                    <input type="number" id="aliquotaManual" placeholder="6.00" min="0" max="35" step="0.01">
+                    <small style="color: #666; font-size: 0.9rem; margin-top: 5px; display: block;">
+                        💡 Digite sua alíquota atual (ex: 6.00, 11.20, 13.50, etc.)
+                    </small>
+                </div>
+
+                <div class="input-group">
+                    <label for="valorDesejado">💰 Valor Líquido Desejado por Serviço (R$)</label>
+                    <input type="text" id="valorDesejado" placeholder="R$ 5.000,00" maxlength="20">
+                    <small style="color: #666; font-size: 0.9rem; margin-top: 5px; display: block;">
+                        💡 Valor que você gostaria de receber líquido (sem impostos)
+                    </small>
+                </div>
+
+                <div class="info-box" style="background: #e8f5e8; border-color: #28a745;">
+                    <strong>📌 Dica:</strong> Não sabe sua alíquota? Use a aba "Calcular Impostos" primeiro para descobrir sua alíquota atual baseada no seu faturamento dos últimos 12 meses.
+                </div>
+
+                <button class="pricing-btn" onclick="calcularPrecificacao()">
+                    💼 Calcular Valor a Cobrar
+                </button>
+            </div>
+
+            <!-- Resultados dos Impostos -->
+            <div id="resultados" class="results hidden">
+                <h3 style="color: #2c3e50; margin-bottom: 20px; text-align: center;">📊 Seus Resultados</h3>
+                
+                <div class="result-item">
+                    <span class="result-label">Faturamento Mensal:</span>
+                    <span class="result-value" id="faturamentoBruto">R$ 0,00</span>
+                </div>
+                
+                <div class="result-item">
+                    <span class="result-label">Faturamento 12 Meses:</span>
+                    <span class="result-value" id="faturamento12mesesExibicao">R$ 0,00</span>
+                </div>
+                
+                <div class="result-item">
+                    <span class="result-label">Alíquota Aplicada:</span>
+                    <span class="result-value" id="aliquota">0%</span>
+                </div>
+                
+                <div class="result-item">
+                    <span class="result-label">Valor do DAS:</span>
+                    <span class="result-value" id="valorDas">R$ 0,00</span>
+                </div>
+                
+                <div class="result-item">
+                    <span class="result-label">Valor Líquido:</span>
+                    <span class="result-value" id="valorLiquido">R$ 0,00</span>
+                </div>
+            </div>
+
+            <!-- Resultado da Precificação -->
+            <div id="resultadoPrecificacao" class="pricing-result hidden">
+                <h3>💼 Valor a Cobrar do Cliente</h3>
+                <div class="pricing-value" id="valorCobrar">R$ 0,00</div>
+                <p><strong>Alíquota aplicada:</strong> <span id="aliquotaPrecificacao">0%</span></p>
+                <p><strong>Valor líquido desejado:</strong> <span id="valorLiquidoDesejado">R$ 0,00</span></p>
+                <p><strong>Imposto a pagar:</strong> <span id="impostoAPagar">R$ 0,00</span></p>
+                <hr style="margin: 15px 0; border: 1px solid rgba(255,255,255,0.3);">
+                <p style="font-size: 0.9rem; opacity: 0.9;">
+                    💡 Cobrando este valor, você receberá exatamente o valor líquido desejado após o pagamento do DAS.
+                </p>
+            </div>
+
+            <div class="cta">
+                <h3>🚀 Pronto para regularizar sua empresa?</h3>
+                <p>A DUO Contabilidade Digital cuida de toda a burocracia para você focar no que realmente importa: fazer sua empresa crescer!</p>
+                <p><strong>✅ Abertura de empresa<br>
+                ✅ Contabilidade completa<br>
+                ✅ Suporte especializado<br>
+                ✅ Planejamento tributário</strong></p>
+                <button class="cta-btn" onclick="contatarContador()">
+                    📞 Falar com Especialista
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tabela de alíquotas do Simples Nacional - Anexo III (2024)
+        const aliquotas = [
+            { faixa: 180000, aliquota: 6.00, deducao: 0 },
+            { faixa: 360000, aliquota: 11.20, deducao: 9360 },
+            { faixa: 720000, aliquota: 13.50, deducao: 17640 },
+            { faixa: 1800000, aliquota: 16.00, deducao: 35640 },
+            { faixa: 3600000, aliquota: 21.00, deducao: 125640 },
+            { faixa: 4800000, aliquota: 33.00, deducao: 648000 }
+        ];
+
+        // Função para trocar de aba
+        function showTab(tabName) {
+            // Remove classe active de todas as abas
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Adiciona classe active na aba selecionada
+            event.target.classList.add('active');
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Esconde resultados
+            document.getElementById('resultados').classList.add('hidden');
+            document.getElementById('resultadoPrecificacao').classList.add('hidden');
+        }
+
+        // Função para formatar valor como moeda brasileira
+        function formatarMoeda(valor) {
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(valor);
+        }
+
+        // Função para remover formatação e retornar número
+        function removerFormatacao(valor) {
+            return parseFloat(valor.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
+        }
+
+        // Função para aplicar máscara de moeda
+        function aplicarMascaraMoeda(input) {
+            let valor = input.value;
+            
+            // Remove tudo que não é dígito
+            valor = valor.replace(/\D/g, '');
+            
+            // Converte para número (dividindo por 100 para ter centavos)
+            valor = (parseInt(valor) / 100).toFixed(2);
+            
+            // Formata como moeda
+            if (valor && valor !== '0.00') {
+                input.value = formatarMoeda(parseFloat(valor));
+            } else {
+                input.value = '';
+            }
+        }
+
+        // Função para calcular alíquota efetiva
+        function calcularAliquotaEfetiva(faturamento12meses) {
+            let aliquotaInfo = aliquotas[0];
+            let faixaAtual = 1;
+            
+            for (let i = 0; i < aliquotas.length; i++) {
+                if (faturamento12meses <= aliquotas[i].faixa) {
+                    aliquotaInfo = aliquotas[i];
+                    faixaAtual = i + 1;
+                    break;
+                }
+            }
+
+            const aliquotaEfetiva = ((faturamento12meses * aliquotaInfo.aliquota / 100) - aliquotaInfo.deducao) / faturamento12meses * 100;
+            
+            return {
+                aliquotaEfetiva: aliquotaEfetiva,
+                faixaAtual: faixaAtual
+            };
+        }
+
+        // Adiciona formatação aos campos de entrada
+        document.getElementById('faturamento').addEventListener('input', function(e) {
+            aplicarMascaraMoeda(e.target);
+        });
+
+        document.getElementById('faturamento12meses').addEventListener('input', function(e) {
+            aplicarMascaraMoeda(e.target);
+        });
+
+        document.getElementById('valorDesejado').addEventListener('input', function(e) {
+            aplicarMascaraMoeda(e.target);
+        });
+
+        function calcularImpostos() {
+            const faturamentoInput = document.getElementById('faturamento');
+            const faturamento12mesesInput = document.getElementById('faturamento12meses');
+            
+            const faturamentoMensal = removerFormatacao(faturamentoInput.value);
+            const faturamento12meses = removerFormatacao(faturamento12mesesInput.value);
+
+            if (faturamentoMensal <= 0) {
+                alert('Por favor, insira um valor válido para o faturamento mensal.');
+                return;
+            }
+
+            if (faturamento12meses <= 0) {
+                alert('Por favor, insira o faturamento total dos últimos 12 meses.');
+                return;
+            }
+
+            if (faturamento12meses > 4800000) {
+                alert('Faturamento excede o limite do Simples Nacional (R$ 4.800.000/ano)');
+                return;
+            }
+
+            const { aliquotaEfetiva, faixaAtual } = calcularAliquotaEfetiva(faturamento12meses);
+            const impostoMensal = faturamentoMensal * aliquotaEfetiva / 100;
+            const valorLiquido = faturamentoMensal - impostoMensal;
+
+            // Exibe os resultados
+            document.getElementById('faturamentoBruto').textContent = formatarMoeda(faturamentoMensal);
+            document.getElementById('aliquota').textContent = aliquotaEfetiva.toFixed(2) + '% (Faixa ' + faixaAtual + ')';
+            document.getElementById('valorDas').textContent = formatarMoeda(impostoMensal);
+            document.getElementById('valorLiquido').textContent = formatarMoeda(valorLiquido);
+            document.getElementById('faturamento12mesesExibicao').textContent = formatarMoeda(faturamento12meses);
+
+            document.getElementById('resultados').classList.remove('hidden');
+            document.getElementById('resultadoPrecificacao').classList.add('hidden');
+            
+            // Animação suave para mostrar resultados
+            document.getElementById('resultados').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('resultados').style.transition = 'opacity 0.5s ease';
+                document.getElementById('resultados').style.opacity = '1';
+            }, 100);
+        }
+
+        function calcularPrecificacao() {
+            const aliquotaInput = document.getElementById('aliquotaManual');
+            const valorDesejadoInput = document.getElementById('valorDesejado');
+            
+            const aliquotaManual = parseFloat(aliquotaInput.value) || 0;
+            const valorLiquidoDesejado = removerFormatacao(valorDesejadoInput.value);
+
+            if (aliquotaManual <= 0 || aliquotaManual > 35) {
+                alert('Por favor, insira uma alíquota válida entre 0% e 35%.');
+                return;
+            }
+
+            if (valorLiquidoDesejado <= 0) {
+                alert('Por favor, insira o valor líquido desejado.');
+                return;
+            }
+            
+            // Cálculo reverso: valorBruto = valorLiquido / (1 - aliquota/100)
+            const valorACobrar = valorLiquidoDesejado / (1 - aliquotaManual / 100);
+            const impostoAPagar = valorACobrar - valorLiquidoDesejado;
+
+            // Exibe os resultados
+            document.getElementById('valorCobrar').textContent = formatarMoeda(valorACobrar);
+            document.getElementById('aliquotaPrecificacao').textContent = aliquotaManual.toFixed(2) + '%';
+            document.getElementById('valorLiquidoDesejado').textContent = formatarMoeda(valorLiquidoDesejado);
+            document.getElementById('impostoAPagar').textContent = formatarMoeda(impostoAPagar);
+
+            document.getElementById('resultadoPrecificacao').classList.remove('hidden');
+            document.getElementById('resultados').classList.add('hidden');
+            
+            // Animação suave para mostrar resultados
+            document.getElementById('resultadoPrecificacao').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('resultadoPrecificacao').style.transition = 'opacity 0.5s ease';
+                document.getElementById('resultadoPrecificacao').style.opacity = '1';
+            }, 100);
+        }
+
+        function contatarContador() {
+            const faturamentoMensal = removerFormatacao(document.getElementById('faturamento').value || '0');
+            const faturamento12meses = removerFormatacao(document.getElementById('faturamento12meses').value || '0');
+            const valorDesejado = removerFormatacao(document.getElementById('valorDesejado').value || '0');
+            const aliquotaManual = parseFloat(document.getElementById('aliquotaManual').value || '0');
+            
+            let mensagem = `Olá! Calculei meus impostos na calculadora do site da DUO Contabilidade Digital e gostaria de saber mais sobre os serviços de vocês.
+
+📊 Meus dados:`;
+
+            if (faturamentoMensal > 0) {
+                mensagem += `
+• Faturamento mensal: ${formatarMoeda(faturamentoMensal)}`;
+            }
+
+            if (faturamento12meses > 0) {
+                mensagem += `
+• Faturamento últimos 12 meses: ${formatarMoeda(faturamento12meses)}`;
+            }
+
+            if (aliquotaManual > 0) {
+                mensagem += `
+• Alíquota atual: ${aliquotaManual.toFixed(2)}%`;
+            }
+
+            if (valorDesejado > 0) {
+                mensagem += `
+• Valor líquido desejado por serviço: ${formatarMoeda(valorDesejado)}`;
+            }
+
+            mensagem += `
+
+Gostaria de uma consultoria para regularizar minha empresa no Simples Nacional.`;
+            
+            // Número de WhatsApp da DUO Contabilidade Digital
+            const whatsapp = '5583987880025'; // Formato: código do país + DDD + número
+            const url = `https://wa.me/${whatsapp}?text=${encodeURIComponent(mensagem)}`;
+            
+            window.open(url, '_blank');
+        }
+
+        // Event listeners para Enter
+        document.getElementById('faturamento').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') calcularImpostos();
+        });
+
+        document.getElementById('faturamento12meses').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') calcularImpostos();
+        });
+
+        document.getElementById('aliquotaManual').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') calcularPrecificacao();
+        });
+
+        document.getElementById('valorDesejado').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') calcularPrecificacao();
+        });
+
+        // Restrição de entrada apenas para números
+        function restricaoNumeros(e) {
+            if ([46, 8, 9, 27, 13].indexOf(e.keyCode) !== -1 ||
+                (e.keyCode === 65 && e.ctrlKey === true) ||
+                (e.keyCode === 67 && e.ctrlKey === true) ||
+                (e.keyCode === 86 && e.ctrlKey === true) ||
+                (e.keyCode === 88 && e.ctrlKey === true)) {
+                return;
+            }
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        }
+
+        document.getElementById('faturamento').addEventListener('keypress', restricaoNumeros);
+        document.getElementById('faturamento12meses').addEventListener('keypress', restricaoNumeros);
+        document.getElementById('valorDesejado').addEventListener('keypress', restricaoNumeros);
+    </script>
+</body>
+</html>
